@@ -36,11 +36,11 @@ void allocate_pairwise_queues(
     }
 }
 
-template<typename Stat_, typename Index_>
+template<bool include_stat_, typename Stat_, typename Index_>
 void report_best_top_queues(
     std::vector<PairwiseTopQueues<Stat_, Index_> >& pqueues,
     const std::size_t ngroups,
-    std::vector<std::vector<std::vector<std::pair<Index_, Stat_> > > >& output
+    Markers<include_stat_, Index_, Stat_>& output
 ) {
     // We know it fits into an 'int' as this is what we got originally.
     const int num_threads = pqueues.size();
@@ -72,7 +72,11 @@ void report_best_top_queues(
             auto& current_out = output[g1][g2];
             while (!current_in.empty()) {
                 const auto& best = current_in.top();
-                current_out.emplace_back(best.second, best.first);
+                if constexpr(include_stat_) { 
+                    current_out.emplace_back(best.second, best.first);
+                } else {
+                    current_out.emplace_back(best.second);
+                }
                 current_in.pop();
             }
             std::reverse(current_out.begin(), current_out.end()); // earliest element should have the strongest effect sizes.

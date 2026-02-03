@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstddef>
 
+#include "utils.h"
 #include "spawn_matrix.h"
 
 #include "singler_classic_markers/blocked.hpp"
@@ -41,6 +42,10 @@ TEST_P(BlockedTest, Single) {
     min_bopt.use_minimum = true;
     auto min_blocked = singler_classic_markers::choose_blocked(*mat, labels.data(), blocks.data(), min_bopt);
     EXPECT_EQ(simple, min_blocked);
+
+    // Works with indices only.
+    auto iblocked = singler_classic_markers::choose_blocked_index(*mat, labels.data(), blocks.data(), bopt);
+    EXPECT_EQ(iblocked, strip_to_indices(blocked));
 
     // Same result when parallelized.
     bopt.num_threads = 3;

@@ -49,32 +49,10 @@ struct ChooseBlockedOptions {
 };
 
 /**
- * Variant of `choose()` that handles multiple blocks (e.g., batch effects) in the reference dataset.
- * Differences between medians are computed within each block and then combined across blocks to obtain a single statistic per gene in each pairwise comparison.
- * The default method is to compute the mean of the per-block differences, but we can also compute the minimum for greater stringency.
- * 
- * @tparam Stat_ Floating-point type of the differences between medians.
- * @tparam Value_ Numeric type of matrix values.
- * @tparam Index_ Integer type of matrix row/column indices.
- * @tparam Label_ Integer type of the label identity.
- * @tparam Block_ Integer type of the block assignment.
- *
- * @param matrix Matrix containing a reference dataset.
- * Each column should correspond to a sample while each row should represent a gene.
- * @param label Pointer to an array of length equal to the number of columns in `matrix`.
- * Each value of the array should specify the label for the corresponding column. 
- * Values should lie in \f$[0, L)\f$ for \f$L\f$ unique labels. 
- * @param block Pointer to an array of length equal to the number of columns in `matrix`.
- * Each value of the array should specify the block for the corresponding column. 
- * Values should lie in \f$[0, B)\f$ for \f$B\f$ unique blocks. 
- * @param options Further options.
- * 
- * @return Top markers for each pairwise comparison between labels.
- * This is equivalent in structure to the return value of `choose()`, 
- * except that the combined difference between medians is reported for each marker.
+ * @cond
  */
-template<typename Stat_ = double, typename Value_, typename Index_, typename Label_, typename Block_>
-std::vector<std::vector<std::vector<std::pair<Index_, Stat_> > > > choose_blocked(
+template<bool include_stat_, typename Stat_, typename Value_, typename Index_, typename Label_, typename Block_>
+Markers<include_stat_, Index_, Stat_> choose_blocked_raw(
     const tatami::Matrix<Value_, Index_>& matrix, 
     const Label_* label,
     const Block_* block,
@@ -152,9 +130,79 @@ std::vector<std::vector<std::vector<std::pair<Index_, Stat_> > > > choose_blocke
         options.num_threads
     );
 
-    std::vector<std::vector<std::vector<std::pair<Index_, Stat_> > > > output;
-    report_best_top_queues(pqueues, ngroups, output);
+    Markers<include_stat_, Index_, Stat_> output;
+    report_best_top_queues<include_stat_>(pqueues, ngroups, output);
     return output;
+}
+/**
+ * @endcond
+ */
+
+/**
+ * Variant of `choose()` that handles multiple blocks (e.g., batch effects) in the reference dataset.
+ * Differences between medians are computed within each block and then combined across blocks to obtain a single statistic per gene in each pairwise comparison.
+ * The default method is to compute the mean of the per-block differences, but we can also compute the minimum for greater stringency.
+ * 
+ * @tparam Stat_ Floating-point type of the differences between medians.
+ * @tparam Value_ Numeric type of matrix values.
+ * @tparam Index_ Integer type of matrix row/column indices.
+ * @tparam Label_ Integer type of the label identity.
+ * @tparam Block_ Integer type of the block assignment.
+ *
+ * @param matrix Matrix containing a reference dataset.
+ * Each column should correspond to a sample while each row should represent a gene.
+ * @param label Pointer to an array of length equal to the number of columns in `matrix`.
+ * Each value of the array should specify the label for the corresponding column. 
+ * Values should lie in \f$[0, L)\f$ for \f$L\f$ unique labels. 
+ * @param block Pointer to an array of length equal to the number of columns in `matrix`.
+ * Each value of the array should specify the block for the corresponding column. 
+ * Values should lie in \f$[0, B)\f$ for \f$B\f$ unique blocks. 
+ * @param options Further options.
+ * 
+ * @return Top markers for each pairwise comparison between labels.
+ * This is equivalent in structure to the return value of `choose()`, 
+ * except that the combined difference between medians is reported for each marker.
+ */
+template<typename Stat_ = double, typename Value_, typename Index_, typename Label_, typename Block_>
+std::vector<std::vector<std::vector<std::pair<Index_, Stat_> > > > choose_blocked(
+    const tatami::Matrix<Value_, Index_>& matrix, 
+    const Label_* label,
+    const Block_* block,
+    const ChooseBlockedOptions& options
+) {
+    return choose_blocked_raw<true, Stat_>(matrix, label, block, options);
+}
+
+/**
+ * Variant of `choose_blocked()` that only reports the indices of the top markers for each pairwise comparison.
+ * This can be used directly in **singlepp** functions.
+ *
+ * @tparam Stat_ Floating-point type of the differences between medians.
+ * @tparam Value_ Numeric type of matrix values.
+ * @tparam Index_ Integer type of matrix row/column indices.
+ * @tparam Label_ Integer type of the label identity.
+ *
+ * @param matrix Matrix containing a reference dataset.
+ * Each column should correspond to a sample while each row should represent a gene.
+ * @param label Pointer to an array of length equal to the number of columns in `matrix`.
+ * Each value of the array should specify the label for the corresponding column. 
+ * Values should lie in \f$[0, L)\f$ for \f$L\f$ unique labels. 
+ * @param block Pointer to an array of length equal to the number of columns in `matrix`.
+ * Each value of the array should specify the block for the corresponding column. 
+ * Values should lie in \f$[0, B)\f$ for \f$B\f$ unique blocks. 
+ * @param options Further options.
+ * 
+ * @return Top markers for each pairwise comparison between labels.
+ * This is the same as the output for `choose_blocked()` except that only the row index is reported in the innermost vector.
+ */
+template<typename Stat_ = double, typename Value_, typename Index_, typename Label_, typename Block_>
+std::vector<std::vector<std::vector<Index_> > > choose_blocked_index(
+    const tatami::Matrix<Value_, Index_>& matrix, 
+    const Label_* label,
+    const Block_* block,
+    const ChooseBlockedOptions& options
+) {
+    return choose_blocked_raw<false, Stat_>(matrix, label, block, options);
 }
 
 }

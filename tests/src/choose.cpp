@@ -1,8 +1,10 @@
 #include <gtest/gtest.h>
 
+#include "utils.h"
 #include "spawn_matrix.h"
 
 #include "singler_classic_markers/choose.hpp"
+
 #include "tatami/tatami.hpp"
 #include "tatami_stats/tatami_stats.hpp"
 #include "topicks/topicks.hpp"
@@ -73,6 +75,10 @@ TEST_P(ChooseTest, Basic) {
     auto smat = tatami::convert_to_compressed_sparse<double, int>(*mat, true, {});
     auto soutput = singler_classic_markers::choose(*mat, labels.data(), mopt);
     EXPECT_EQ(output, soutput);
+
+    // Works with indices only.
+    auto ioutput = singler_classic_markers::choose_index(*mat, labels.data(), mopt);
+    EXPECT_EQ(ioutput, strip_to_indices(output));
 
     // Same result when parallelized.
     mopt.num_threads = 3;
