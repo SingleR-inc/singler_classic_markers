@@ -8,7 +8,8 @@ var indexSectionsWithContent =
   5: "ciknpstuv",
   6: "deimnprsv",
   7: "abcds",
-  8: "o"
+  8: "o",
+  9: "cops"
 };
 
 var indexSectionNames =
@@ -21,7 +22,8 @@ var indexSectionNames =
   5: "variables",
   6: "typedefs",
   7: "enums",
-  8: "related"
+  8: "related",
+  9: "pages"
 };
 
 var indexSectionLabels =
@@ -34,6 +36,7 @@ var indexSectionLabels =
   5: "Variables",
   6: "Typedefs",
   7: "Enumerations",
-  8: "Friends"
+  8: "Friends",
+  9: "Pages"
 };
 

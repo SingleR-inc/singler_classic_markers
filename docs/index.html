@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.12.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>singler_classic_markers: Main Page</title>
+<title>singler_classic_markers: C++ port of SingleR</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -92,10 +92,63 @@ $(function(){ initResizable(false); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">singler_classic_markers Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">C++ port of SingleR </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md__2github_2workspace_2README"></a></p>
+<p><img src="https://github.com/SingleR-inc/singler_classic_markers/actions/workflows/run-tests.yaml/badge.svg" alt="Unit tests" style="pointer-events: none;" class="inline"/> <img src="https://github.com/SingleR-inc/singler_classic_markers/actions/workflows/doxygenate.yaml/badge.svg" alt="Documentation" style="pointer-events: none;" class="inline"/> <img src="https://github.com/SingleR-inc/singler_classic_markers/actions/workflows/compare-r.yaml/badge.svg" alt="R comparison" style="pointer-events: none;" class="inline"/> <a href="https://codecov.io/gh/SingleR-inc/singler_classic_markers"><img src="https://codecov.io/gh/SingleR-inc/singler_classic_markers/branch/master/graph/badge.svg?token=q3AJjQtKtj" alt="codecov" style="pointer-events: none;" class="inline"/></a></p>
+<h1>Overview</h1>
+<p>This repository implements the classic marker detection algorithm from <a href="https://bioconductor.org/packages/SingleR"><b>SingleR</b></a>. For each pairwise comparison between labels, genes are ranked based on the difference in the medians of log-expression values. This can effectively be treated as a robust estimate of the log-fold change. The top genes are then used as markers in the <b>SingleR</b> algorithm. Fewer markers are used from each comparison as the number of labels increases. We also provide methods for combining information across blocks in the presence of, e.g., batch effects.</p>
+<h1>Quick start</h1>
+<p><b><a class="el" href="namespacesingler__classic__markers.html" title="Implementation of the classic SingleR marker detection.">singler_classic_markers</a></b> is a header-only library, so it can be easily used by just <code>#include</code>ing the relevant source files.</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="singler__classic__markers_8hpp.html">singler_classic_markers/singler_classic_markers.hpp</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Prepare the reference matrix as a tatami::NumericMatrix.</span></div>
+<div class="line">ref_mat;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Prepare a vector of labels, one per column of ref_mat.</span></div>
+<div class="line">ref_labels;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Computing the top markers, which can be directly used in singlepp::train_single().</span></div>
+<div class="line"><a class="code hl_struct" href="structsingler__classic__markers_1_1ChooseOptions.html">singler_classic_markers::ChooseOptions</a> opts;</div>
+<div class="line"><span class="keyword">auto</span> markers = <a class="code hl_function" href="namespacesingler__classic__markers.html#a02dd6670d70dbc7a563785a95282d93b">singler_classic_markers::choose_index</a>(ref_mat, ref_labels.data(), opts); </div>
+<div class="ttc" id="anamespacesingler__classic__markers_html_a02dd6670d70dbc7a563785a95282d93b"><div class="ttname"><a href="namespacesingler__classic__markers.html#a02dd6670d70dbc7a563785a95282d93b">singler_classic_markers::choose_index</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; std::vector&lt; Index_ &gt; &gt; &gt; choose_index(const tatami::Matrix&lt; Value_, Index_ &gt; &amp;matrix, const Label_ *label, const ChooseOptions &amp;options)</div><div class="ttdef"><b>Definition</b> choose.hpp:149</div></div>
+<div class="ttc" id="asingler__classic__markers_8hpp_html"><div class="ttname"><a href="singler__classic__markers_8hpp.html">singler_classic_markers.hpp</a></div><div class="ttdoc">Umbrella header for the singler_classic_markers library.</div></div>
+<div class="ttc" id="astructsingler__classic__markers_1_1ChooseOptions_html"><div class="ttname"><a href="structsingler__classic__markers_1_1ChooseOptions.html">singler_classic_markers::ChooseOptions</a></div><div class="ttdoc">Options for choose().</div><div class="ttdef"><b>Definition</b> choose.hpp:26</div></div>
+</div><!-- fragment --><p>See the <a href="https://singler-inc.github.io/singler_classic_markers">reference documentation</a> for more details.</p>
+<h1>Building projects</h1>
+<h2>CMake with <code>FetchContent</code></h2>
+<p>If you're using CMake, you just need to add something like this to your <code>CMakeLists.txt</code>:</p>
+<div class="fragment"><div class="line">include(FetchContent)</div>
+<div class="line"> </div>
+<div class="line">FetchContent_Declare(</div>
+<div class="line">  singler_classic_markers</div>
+<div class="line">  GIT_REPOSITORY https://github.com/SingleR-inc/singler_classic_markers</div>
+<div class="line">  GIT_TAG master # replace with a pinned release</div>
+<div class="line">)</div>
+<div class="line"> </div>
+<div class="line">FetchContent_MakeAvailable(singler_classic_markers)</div>
+</div><!-- fragment --><p>Then you can link to <b><a class="el" href="namespacesingler__classic__markers.html" title="Implementation of the classic SingleR marker detection.">singler_classic_markers</a></b> to make the headers available during compilation:</p>
+<div class="fragment"><div class="line"># For executables:</div>
+<div class="line">target_link_libraries(myexe singler_classic_markers)</div>
+<div class="line"> </div>
+<div class="line"># For libaries</div>
+<div class="line">target_link_libraries(mylib INTERFACE singler_classic_markers)</div>
+</div><!-- fragment --><p>By default, this will use <code>FetchContent</code> to fetch all external dependencies. Applications are advised to pin the versions of all dependencies - see <a href="extern/CMakeLists.txt"><code>extern/CMakeLists.txt</code></a> for suggested versions. If you want to install them manually, use <code>-DSINGLER_CLASSIC_MARKERS_FETCH_EXTERN=OFF</code>.</p>
+<h2>CMake with <code>find_package()</code></h2>
+<div class="fragment"><div class="line">find_package(singler_singler_classic_markers CONFIG REQUIRED)</div>
+<div class="line">target_link_libraries(mylib INTERFACE singler::singler_classic_markers)</div>
+</div><!-- fragment --><p>To install the library, use:</p>
+<div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
+<div class="line">cmake .. -DSINGLER_CLASSIC_MARKERS_TESTS=OFF</div>
+<div class="line">cmake --build . --target install</div>
+</div><!-- fragment --><p>Again, this will use <code>FetchContent</code> to retrieve dependencies, see comments above.</p>
+<h2>Manual</h2>
+<p>If you're not using CMake, the simple approach is to just copy the files in <code>include/</code> - either directly or with Git submodules - and include their path during compilation with, e.g., GCC's <code>-I</code>. This assumes that the external dependencies listed in <a href="extern/CMakeLists.txt"><code>extern/CMakeLists.txt</code></a> are available during compilation.</p>
+<h1>References</h1>
+<p>Aran D et al. (2019). Reference-based analysis of lung single-cell sequencing reveals a transitional profibrotic macrophage. <em>Nat. Immunol.</em> 20, 163-172 </p>
+</div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 <!-- start footer part -->

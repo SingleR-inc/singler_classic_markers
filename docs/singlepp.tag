@@ -111,4 +111,10 @@
       <arglist>(std::size_t num_labels)</arglist>
     </member>
   </compound>
+  <compound kind="page">
+    <name>index</name>
+    <title>C++ port of SingleR</title>
+    <filename>index.html</filename>
+    <docanchor file="index.html">md__2github_2workspace_2README</docanchor>
+  </compound>
 </tagfile>
