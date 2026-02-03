@@ -18,8 +18,8 @@ target_include_directories(singler_classic_markers INTERFACE
 target_compile_features(singler_classic_markers INTERFACE cxx_std_17)
 
 # Dependencies
-option(SINGLEPP_FETCH_EXTERN "Automatically fetch singler_classic_markers's external dependencies." ON)
-if(SINGLEPP_FETCH_EXTERN)
+option(SINGLER_CLASSIC_MARKERS_FETCH_EXTERN "Automatically fetch singler_classic_markers's external dependencies." ON)
+if(SINGLER_CLASSIC_MARKERS_FETCH_EXTERN)
     add_subdirectory(extern)
 else()
     find_package(tatami_tatami 4.0.0 CONFIG REQUIRED)
@@ -32,12 +32,12 @@ target_link_libraries(singler_classic_markers INTERFACE tatami::tatami tatami::t
 
 # Tests
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    option(SINGLEPP_TESTS "Build singler_classic_markers's test suite." ON)
+    option(SINGLER_CLASSIC_MARKERS_TESTS "Build singler_classic_markers's test suite." ON)
 else()
-    option(SINGLEPP_TESTS "Build singler_classic_markers's test suite." OFF)
+    option(SINGLER_CLASSIC_MARKERS_TESTS "Build singler_classic_markers's test suite." OFF)
 endif()
 
-if(SINGLEPP_TESTS)
+if(SINGLER_CLASSIC_MARKERS_TESTS)
     include(CTest)
     if(BUILD_TESTING)
         add_subdirectory(tests)
