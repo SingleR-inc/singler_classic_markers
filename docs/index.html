@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.12.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>singler_classic_markers: C++ port of SingleR</title>
+<title>singler_classic_markers: Classic marker detection in SingleR</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -93,13 +93,13 @@ $(function(){ initResizable(false); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">C++ port of SingleR </div></div>
+  <div class="headertitle"><div class="title">Classic marker detection in SingleR </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md__2github_2workspace_2README"></a></p>
-<p><img src="https://github.com/SingleR-inc/singler_classic_markers/actions/workflows/run-tests.yaml/badge.svg" alt="Unit tests" style="pointer-events: none;" class="inline"/> <img src="https://github.com/SingleR-inc/singler_classic_markers/actions/workflows/doxygenate.yaml/badge.svg" alt="Documentation" style="pointer-events: none;" class="inline"/> <img src="https://github.com/SingleR-inc/singler_classic_markers/actions/workflows/compare-r.yaml/badge.svg" alt="R comparison" style="pointer-events: none;" class="inline"/> <a href="https://codecov.io/gh/SingleR-inc/singler_classic_markers"><img src="https://codecov.io/gh/SingleR-inc/singler_classic_markers/branch/master/graph/badge.svg?token=q3AJjQtKtj" alt="codecov" style="pointer-events: none;" class="inline"/></a></p>
+<p><img src="https://github.com/SingleR-inc/singler_classic_markers/actions/workflows/run-tests.yaml/badge.svg" alt="Unit tests" style="pointer-events: none;" class="inline"/> <img src="https://github.com/SingleR-inc/singler_classic_markers/actions/workflows/doxygenate.yaml/badge.svg" alt="Documentation" style="pointer-events: none;" class="inline"/> <a href="https://codecov.io/gh/SingleR-inc/singler_classic_markers"><img src="https://codecov.io/gh/SingleR-inc/singler_classic_markers/branch/master/graph/badge.svg?token=q3AJjQtKtj" alt="codecov" style="pointer-events: none;" class="inline"/></a></p>
 <h1>Overview</h1>
-<p>This repository implements the classic marker detection algorithm from <a href="https://bioconductor.org/packages/SingleR"><b>SingleR</b></a>. For each pairwise comparison between labels, genes are ranked based on the difference in the medians of log-expression values. This can effectively be treated as a robust estimate of the log-fold change. The top genes are then used as markers in the <b>SingleR</b> algorithm. Fewer markers are used from each comparison as the number of labels increases. We also provide methods for combining information across blocks in the presence of, e.g., batch effects.</p>
+<p>This repository implements the classic marker detection algorithm from <a href="https://bioconductor.org/packages/SingleR"><b>SingleR</b></a>. For each pairwise comparison between labels, genes are ranked based on the difference in the medians of log-expression values. The top genes are then used as markers in the <b>SingleR</b> algorithm. We also provide methods for combining information across blocks in the presence of, e.g., batch effects.</p>
 <h1>Quick start</h1>
 <p><b><a class="el" href="namespacesingler__classic__markers.html" title="Implementation of the classic SingleR marker detection.">singler_classic_markers</a></b> is a header-only library, so it can be easily used by just <code>#include</code>ing the relevant source files.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="singler__classic__markers_8hpp.html">singler_classic_markers/singler_classic_markers.hpp</a>&quot;</span></div>
@@ -117,6 +117,9 @@ $(function(){ initResizable(false); });
 <div class="ttc" id="asingler__classic__markers_8hpp_html"><div class="ttname"><a href="singler__classic__markers_8hpp.html">singler_classic_markers.hpp</a></div><div class="ttdoc">Umbrella header for the singler_classic_markers library.</div></div>
 <div class="ttc" id="astructsingler__classic__markers_1_1ChooseOptions_html"><div class="ttname"><a href="structsingler__classic__markers_1_1ChooseOptions.html">singler_classic_markers::ChooseOptions</a></div><div class="ttdoc">Options for choose().</div><div class="ttdef"><b>Definition</b> choose.hpp:26</div></div>
 </div><!-- fragment --><p>See the <a href="https://singler-inc.github.io/singler_classic_markers">reference documentation</a> for more details.</p>
+<h1>Alternatives</h1>
+<p>As its name suggests, the classic method was part of the original implementation of the <b>SingleR</b> method. It is simple and works well for the built-in reference datasets, but is less appropriate for single-cell references where the median is often zero within each label. In such cases, we suggest using the <code>score_markers_best()</code> function from the <a href="https://github.com/libscran/scran_markers"><b>scran_markers</b></a> library, which ranks genes on effect sizes that are more robust to a large number of zeros.</p>
+<p>For bulk RNA-seq references, we could also consider using tools like <a href="https://bioconductor.org/packages/edgeR"><b>edgeR</b></a> or <a href="https://bioconductor.org/packages/DESeq2"><b>DESeq2</b></a>. Briefly, we could perform differential expression comparisons between all labels (possibly using TREAT to enforce a minimum log-fold change) and then take the top genes as markers. This would likely yield better markers than <b>SingleR</b>'s classic approach, as <b>edgeR</b> and friends consider the variance within each label and will favor genes that have more consistent behavior.</p>
 <h1>Building projects</h1>
 <h2>CMake with <code>FetchContent</code></h2>
 <p>If you're using CMake, you just need to add something like this to your <code>CMakeLists.txt</code>:</p>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['of_20singler_0',['C++ port of SingleR',['../index.html',1,'']]]
+  ['detection_20in_20singler_0',['Classic marker detection in SingleR',['../index.html',1,'']]]
 ];

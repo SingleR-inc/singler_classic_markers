@@ -148,6 +148,7 @@ var searchData=
   ['densematrix_2ehpp_145',['DenseMatrix.hpp',['https://tatami-inc.github.io/tatami/DenseMatrix_8hpp.html',1,'']]],
   ['densematrix_3c_20value_5f_2c_20index_5f_2c_20storage_5f_20_3e_146',['DenseMatrix&lt; Value_, Index_, Storage_ &gt;',['https://tatami-inc.github.io/tatami/classtatami_1_1DenseMatrix.html',1,'tatami']]],
   ['denserowmatrix_147',['DenseRowMatrix',['https://tatami-inc.github.io/tatami/classtatami_1_1DenseRowMatrix.html',1,'tatami::DenseRowMatrix&lt; typename Value_, typename Index_, class Storage_ &gt;'],['https://tatami-inc.github.io/tatami/classtatami_1_1DenseRowMatrix.html#a17956d69228777bc58124f80ea1eb37e',1,'tatami::DenseRowMatrix::DenseRowMatrix()']]],
-  ['difference_5ftype_148',['difference_type',['https://tatami-inc.github.io/tatami/structtatami_1_1SomeNumericArray_1_1Iterator.html#aefb9a8cadab1f35ebe83a01e76c2520f',1,'tatami::SomeNumericArray::Iterator']]],
-  ['dimensionselectiontype_149',['DimensionSelectionType',['https://tatami-inc.github.io/tatami/namespacetatami.html#a0a2ecaf58e2b69bb4a808e814aeb16a1',1,'tatami']]]
+  ['detection_20in_20singler_148',['Classic marker detection in SingleR',['../index.html',1,'']]],
+  ['difference_5ftype_149',['difference_type',['https://tatami-inc.github.io/tatami/structtatami_1_1SomeNumericArray_1_1Iterator.html#aefb9a8cadab1f35ebe83a01e76c2520f',1,'tatami::SomeNumericArray::Iterator']]],
+  ['dimensionselectiontype_150',['DimensionSelectionType',['https://tatami-inc.github.io/tatami/namespacetatami.html#a0a2ecaf58e2b69bb4a808e814aeb16a1',1,'tatami']]]
 ];

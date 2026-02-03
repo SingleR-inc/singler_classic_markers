@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['singler_0',['C++ port of SingleR',['../index.html',1,'']]],
+  ['singler_0',['Classic marker detection in SingleR',['../index.html',1,'']]],
   ['singler_5fclassic_5fmarkers_1',['singler_classic_markers',['../namespacesingler__classic__markers.html',1,'']]],
   ['singler_5fclassic_5fmarkers_2ehpp_2',['singler_classic_markers.hpp',['../singler__classic__markers_8hpp.html',1,'']]],
   ['size_3',['size',['https://tatami-inc.github.io/tatami/classtatami_1_1ArrayView.html#aeff4b1aaf012ce0079ba859600c9652c',1,'tatami::ArrayView::size()'],['https://tatami-inc.github.io/tatami/classtatami_1_1SomeNumericArray.html#adef230cbcde9ff6bcb797dd581810ff5',1,'tatami::SomeNumericArray::size()']]],
