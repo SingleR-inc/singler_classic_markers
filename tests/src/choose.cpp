@@ -148,3 +148,39 @@ TEST(Choose, Ties) {
     EXPECT_EQ(tied[0][1].size(), 50);
     EXPECT_EQ(tied[1][0].size(), 50);
 }
+
+TEST(Choose, Zero) { 
+    {
+        tatami::DenseColumnMatrix<double, int> mat(0, 3, std::vector<double>());
+        std::vector<int> grouping { 0, 1, 2 };
+        auto empty = singler_classic_markers::choose(mat, grouping.data(), {});
+        EXPECT_EQ(empty.size(), 3);
+        for (int i = 0; i < 3; ++i) {
+            EXPECT_EQ(empty[i].size(), 3);
+            for (int j = 0; j < 3; ++j) {
+                EXPECT_TRUE(empty[i][j].empty());
+            }
+        }
+    }
+
+    {
+        tatami::DenseColumnMatrix<double, int> mat(50, 3, std::vector<double>(150));
+        std::vector<int> grouping { 0, 1, 2 };
+        singler_classic_markers::ChooseOptions opt;
+        opt.number = 0;
+        auto empty = singler_classic_markers::choose(mat, grouping.data(), opt);
+        EXPECT_EQ(empty.size(), 3);
+        for (int i = 0; i < 3; ++i) {
+            EXPECT_EQ(empty[i].size(), 3);
+            for (int j = 0; j < 3; ++j) {
+                EXPECT_TRUE(empty[i][j].empty());
+            }
+        }
+    }
+
+    {
+        tatami::DenseColumnMatrix<double, int> mat(100, 0, std::vector<double>());
+        auto empty = singler_classic_markers::choose(mat, static_cast<int*>(NULL), {});
+        EXPECT_TRUE(empty.empty());
+    }
+}

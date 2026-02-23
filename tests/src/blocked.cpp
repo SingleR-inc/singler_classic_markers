@@ -279,3 +279,45 @@ INSTANTIATE_TEST_SUITE_P(
     BlockedTest,
     ::testing::Values(1, 20, 50, 1000) // number of top genes.
 );
+
+TEST(Blocked, Zero) { 
+    {
+        tatami::DenseColumnMatrix<double, int> mat(0, 4, std::vector<double>());
+        std::vector<int> grouping { 0, 1, 0, 2 };
+        std::vector<int> blocks { 0, 0, 1, 1 };
+        auto tied = singler_classic_markers::choose_blocked(mat, grouping.data(), blocks.data(), {});
+
+        EXPECT_EQ(tied.size(), 3);
+        for (int i = 0; i < 3; ++i) {
+            EXPECT_EQ(tied[i].size(), 3);
+            for (int j = 0; j < 3; ++j) {
+                EXPECT_TRUE(tied[i][j].empty());
+            }
+        }
+    }
+
+    {
+        tatami::DenseColumnMatrix<double, int> mat(100, 4, std::vector<double>(400));
+        std::vector<int> grouping { 0, 1, 0, 2 };
+        std::vector<int> blocks { 0, 0, 1, 1 };
+
+        singler_classic_markers::ChooseBlockedOptions opt;
+        opt.number = 0;
+        auto tied = singler_classic_markers::choose_blocked(mat, grouping.data(), blocks.data(), {});
+
+        EXPECT_EQ(tied.size(), 3);
+        for (int i = 0; i < 3; ++i) {
+            EXPECT_EQ(tied[i].size(), 3);
+            for (int j = 0; j < 3; ++j) {
+                EXPECT_TRUE(tied[i][j].empty());
+            }
+        }
+    }
+
+    {
+        tatami::DenseColumnMatrix<double, int> mat(100, 0, std::vector<double>());
+        auto empty = singler_classic_markers::choose_blocked(mat, static_cast<int*>(NULL), static_cast<int*>(NULL), {});
+        EXPECT_TRUE(empty.empty());
+    }
+
+}
