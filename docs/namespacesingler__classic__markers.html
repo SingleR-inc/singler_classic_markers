@@ -356,7 +356,7 @@ template&lt;typename Stat_  = double, typename Value_ , typename Index_ , typena
 </table>
 </div><div class="memdoc">
 <p>Default number of markers in <code><a class="el" href="#a29f3016c7e7d31e152a4419e8b5edc32">choose()</a></code> and <code><a class="el" href="#a5ea0e04676bd8d57ada385292c48854f">choose_blocked()</a></code>.</p>
-<p>The exact expression is defined as \(500 (\frac{2}{3})^{\log_2{L}}\) for \(L\) labels, which steadily decreases the markers per comparison as the number of labels increases. This aims to avoid an excessive number of features when dealing with references with many labels.</p>
+<p>The exact expression is defined as \(500 (\frac{2}{3})^{\log_2{L}}\) for \(L\) labels, which steadily decreases the markers per comparison as the number of labels increases. This aims to avoid an excessive number of features when dealing with references with many labels. At \(L=0\), the number of markers is set to zero.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">num_labels</td><td>Number of labels in the reference(s).</td></tr>
