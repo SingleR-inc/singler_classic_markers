@@ -14,13 +14,18 @@ namespace singler_classic_markers {
  * The exact expression is defined as \f$500 (\frac{2}{3})^{\log_2{L}}\f$ for \f$L\f$ labels,
  * which steadily decreases the markers per comparison as the number of labels increases.
  * This aims to avoid an excessive number of features when dealing with references with many labels.
+ * At \f$L=0\f$, the number of markers is set to zero.
  *
  * @param num_labels Number of labels in the reference(s).
  *
  * @return An appropriate number of markers for each pairwise comparison.
  */
 inline std::size_t default_number(std::size_t num_labels) {
-    return sanisizer::from_float<std::size_t>(std::round(500.0 * std::pow(2.0/3.0, std::log2(static_cast<double>(num_labels)))));
+    if (num_labels == 0) {
+        return 0;
+    } else {
+        return sanisizer::from_float<std::size_t>(std::round(500.0 * std::pow(2.0/3.0, std::log2(static_cast<double>(num_labels)))));
+    }
 }
 
 /**
