@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 
 project(singler_classic_markers
-    VERSION 0.1.1
+    VERSION 0.1.2
     DESCRIPTION "Classic marker detection in SingleR"
     LANGUAGES CXX)
 
@@ -22,9 +22,9 @@ option(SINGLER_CLASSIC_MARKERS_FETCH_EXTERN "Automatically fetch singler_classic
 if(SINGLER_CLASSIC_MARKERS_FETCH_EXTERN)
     add_subdirectory(extern)
 else()
-    find_package(tatami_tatami 4.0.0 CONFIG REQUIRED)
-    find_package(tatami_tatami_stats 3.0.0 CONFIG REQUIRED)
-    find_package(ltla_sanisizer 0.1.5 CONFIG REQUIRED)
+    find_package(tatami_tatami 4.1.0 CONFIG REQUIRED)
+    find_package(tatami_tatami_stats 2.0.0 CONFIG REQUIRED)
+    find_package(ltla_sanisizer 0.2.0 CONFIG REQUIRED)
     find_package(libscran_topicks 0.2.2 CONFIG REQUIRED)
 endif()
 
