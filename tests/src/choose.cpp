@@ -73,7 +73,7 @@ TEST_P(ChooseTest, Basic) {
 
     // Same result with sparse.
     auto smat = tatami::convert_to_compressed_sparse<double, int>(*mat, true, {});
-    auto soutput = singler_classic_markers::choose(*mat, labels.data(), mopt);
+    auto soutput = singler_classic_markers::choose(*smat, labels.data(), mopt);
     EXPECT_EQ(output, soutput);
 
     // Works with indices only.
