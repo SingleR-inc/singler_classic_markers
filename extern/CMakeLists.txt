@@ -19,6 +19,12 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
+  quickstats 
+  GIT_REPOSITORY https://github.com/LTLA/quickstats
+  GIT_TAG master  # ^0.1.0
+)
+
+FetchContent_Declare(
   topicks 
   GIT_REPOSITORY https://github.com/libscran/topicks
   GIT_TAG master  # ^0.2.2
@@ -27,4 +33,5 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(tatami)
 FetchContent_MakeAvailable(tatami_stats)
 FetchContent_MakeAvailable(sanisizer)
+FetchContent_MakeAvailable(quickstats)
 FetchContent_MakeAvailable(topicks)

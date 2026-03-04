@@ -6,7 +6,7 @@
 
 #include "sanisizer/sanisizer.hpp"
 #include "tatami/tatami.hpp"
-#include "tatami_stats/tatami_stats.hpp"
+#include "quickstats/quickstats.hpp"
 
 namespace singler_classic_markers {
 
@@ -47,7 +47,7 @@ int scan_matrix(
 
                 for (std::size_t c = 0; c < ncombos; ++c) {
                     auto& w = workspace[c];
-                    medians[c] = tatami_stats::medians::direct<Stat_, Value_, Index_>(w.data(), w.size(), combo_sizes[c], /* skip_nan = */ false);
+                    medians[c] = quickstats::median<Stat_, Index_, Value_>(combo_sizes[c], w.size(), w.data());
                     w.clear();
                 }
 
@@ -65,7 +65,7 @@ int scan_matrix(
 
                 for (std::size_t c = 0; c < ncombos; ++c) {
                     auto& w = workspace[c];
-                    medians[c] = tatami_stats::medians::direct<Stat_, Value_, Index_>(w.data(), w.size(), /* skip_nan = */ false);
+                    medians[c] = quickstats::median<Stat_, Index_, Value_>(w.size(), w.data());
                     w.clear();
                 }
 
